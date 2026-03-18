@@ -16,7 +16,6 @@ export default function PrintDocument({ doc, client, settings }: Props) {
       background: '#fff',
       color: '#1a1a1a',
       padding: '14mm 16mm',
-      minHeight: '297mm',
       width: '210mm',
     }}>
       {/* Top bar — all 4 palette colors */}
