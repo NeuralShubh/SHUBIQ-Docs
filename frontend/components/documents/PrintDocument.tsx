@@ -163,7 +163,6 @@ export default function PrintDocument({ doc, client, settings }: Props) {
               <span>{doc.type === 'Receipt' ? 'Amount Received' : 'Total Due'}</span>
               <span>{fmt(doc.total)}</span>
             </div>
-            {doc.currency === 'INR' && <div style={{ fontSize: 9, color: '#bbb', textAlign: 'right' }}>Amount in Indian Rupees</div>}
           </div>
         </div>
       </div>
