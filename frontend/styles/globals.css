@@ -823,11 +823,12 @@ input, select, textarea { min-height: 44px; }
     display: block !important;
     width: 210mm;
     min-height: auto;
-    padding: 12mm 14mm 10mm;
+    padding: 10mm 12mm 6mm;
     background: white !important;
     color: #1a1a1a !important;
     font-size: 13px;
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   .print-footer {
@@ -836,8 +837,12 @@ input, select, textarea { min-height: 44px; }
   }
 
   .print-bottom-bar {
-    margin-top: 8px !important;
+    margin-top: 6px !important;
+    margin-bottom: 0 !important;
   }
+
+  .print-preview-bg { padding: 0 !important; background: transparent !important; }
+  .print-document, .print-document * { page-break-inside: avoid; }
 }
 
 .print-only { display: none; }
