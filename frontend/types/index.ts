@@ -1,6 +1,7 @@
 export type DocumentType = 'Invoice' | 'Estimate' | 'Receipt'
-export type DocumentStatus = 'Draft' | 'Unpaid' | 'Paid' | 'Cancelled'
+export type DocumentStatus = 'Draft' | 'Unpaid' | 'Paid' | 'Partially Paid' | 'Cancelled' | 'Closed'
 export type Currency = 'INR' | 'USD'
+export type TransactionType = 'Income' | 'Expense' | 'Transfer' | 'Write-Off'
 
 export interface Client {
   id: string
@@ -22,6 +23,42 @@ export interface LineItem {
   amount: number
 }
 
+export interface BankAccount {
+  id: string
+  name: string
+  type: string
+  balance: number
+  currency: Currency
+  account_number: string
+  ifsc_code: string
+  bank_name: string
+  is_default: boolean
+  created_at: string
+  updated_at: string
+}
+
+export interface Category {
+  id: string
+  name: string
+  type: 'Income' | 'Expense'
+  icon: string
+}
+
+export interface Transaction {
+  id: string
+  date: string
+  amount: number
+  type: TransactionType
+  description: string
+  category_id?: string
+  category_name?: string
+  category_icon?: string
+  account_id?: string
+  account_name?: string
+  related_document_id?: string
+  created_at: string
+}
+
 export interface Document {
   id: string
   type: DocumentType
@@ -37,6 +74,8 @@ export interface Document {
   tax_rate: number
   tax_amount: number
   total: number
+  paid_amount: number
+  discount_amount: number
   notes: string
   terms: string
   payment_method: string
@@ -47,6 +86,18 @@ export interface Document {
   ref_document: string
   created_at: string
   updated_at: string
+}
+
+export interface FinancialSummary {
+  total_income: number
+  total_expense: number
+  total_balance: number
+  total_receivable: number
+  cashflow: {
+    month_label: string
+    income: number
+    expense: number
+  }[]
 }
 
 export interface CompanySettings {

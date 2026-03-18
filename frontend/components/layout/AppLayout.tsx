@@ -5,6 +5,10 @@ import Link from 'next/link'
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard' },
+  { section: 'Finance' },
+  { href: '/finance', label: 'Overview' },
+  { href: '/finance/transactions', label: 'Transactions' },
+  { href: '/finance/accounts', label: 'Bank Accounts' },
   { section: 'Documents' },
   { href: '/invoices', label: 'Invoices' },
   { href: '/estimates', label: 'Estimates' },
@@ -112,6 +116,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <rect x="11" y="11" width="7" height="7" rx="1.5" />
             </svg>
             <span className="bn-label">Home</span>
+          </button>
+
+          {/* Finance */}
+          <button
+            className={`bn-item${pathname.startsWith('/finance') ? ' active' : ''}`}
+            onClick={() => router.push('/finance')}
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" strokeWidth="1.6">
+              <path d="M2 15h16M2 11h16M2 7h16" />
+              <rect x="5" y="4" width="2" height="12" />
+              <rect x="13" y="4" width="2" height="12" />
+            </svg>
+            <span className="bn-label">Finance</span>
           </button>
 
           {/* Invoices */}

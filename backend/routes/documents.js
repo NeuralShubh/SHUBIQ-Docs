@@ -144,4 +144,86 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
+// RECORD PAYMENT
+router.post('/:id/record-payment', async (req, res) => {
+  const { 
+    amountPaid, 
+    discount, 
+    accountId, 
+    date, 
+    description,
+    paymentMethod,
+    categoryId // Category for the income
+  } = req.body
+
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+
+    // 1. Get current document
+    const { rows: docs } = await client.query('SELECT total, paid_amount, discount_amount, number FROM documents WHERE id = $1', [req.params.id])
+    if (!docs[0]) return res.status(404).json({ error: 'Document not found' })
+    const doc = docs[0]
+
+    const sub_paid = parseFloat(amountPaid) || 0
+    const sub_discount = parseFloat(discount) || 0
+    const new_paid_total = parseFloat(doc.paid_amount) + sub_paid
+    const new_discount_total = parseFloat(doc.discount_amount) + sub_discount
+    
+    // 2. Determine new status
+    let status = 'Unpaid'
+    if (new_paid_total + new_discount_total >= doc.total) {
+      status = 'Paid'
+      if (new_discount_total > 0) status = 'Closed' // Specialized status for settled with discount
+    } else if (new_paid_total > 0) {
+      status = 'Partially Paid'
+    }
+
+    // 3. Update document
+    const { rows: updated } = await client.query(
+      `UPDATE documents SET 
+        paid_amount = $1, 
+        discount_amount = $2, 
+        status = $3,
+        updated_at = NOW()
+       WHERE id = $4 RETURNING *`,
+      [new_paid_total, new_discount_total, status, req.params.id]
+    )
+
+    // 4. Create Income Transaction
+    if (sub_paid > 0) {
+      await client.query(
+        `INSERT INTO transactions (date, amount, type, description, account_id, related_document_id, category_id)
+         VALUES ($1, $2, 'Income', $3, $4, $5, $6)`,
+        [date || new Date(), sub_paid, description || `Payment for Invoice #${doc.number}`, accountId, req.params.id, categoryId]
+      )
+
+      // 5. Update Bank Account Balance
+      if (accountId) {
+        await client.query(
+          `UPDATE bank_accounts SET balance = balance + $1 WHERE id = $2`,
+          [sub_paid, accountId]
+        )
+      }
+    }
+
+    // 6. Record Write-Off Transaction (if any discount)
+    if (sub_discount > 0) {
+      await client.query(
+        `INSERT INTO transactions (date, amount, type, description, related_document_id)
+         VALUES ($1, $2, 'Write-Off', $3, $4)`,
+        [date || new Date(), sub_discount, `Discount/Write-off for Invoice #${doc.number}`, req.params.id]
+      )
+    }
+
+    await client.query('COMMIT')
+    res.json(updated[0])
+  } catch (err) {
+    await client.query('ROLLBACK')
+    res.status(500).json({ error: err.message })
+  } finally {
+    client.release()
+  }
+})
+
 module.exports = router

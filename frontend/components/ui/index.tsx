@@ -6,7 +6,12 @@ import { Currency } from '@/types'
 // ── STATUS BADGE ──
 export function StatusBadge({ status }: { status: string }) {
   const map: Record<string, string> = {
-    Paid: 's-paid', Draft: 's-draft', Unpaid: 's-unpaid', Cancelled: 's-cancelled'
+    Paid: 's-paid', 
+    Draft: 's-draft', 
+    Unpaid: 's-unpaid', 
+    Cancelled: 's-cancelled',
+    'Partially Paid': 's-partial',
+    Closed: 's-closed'
   }
   return <span className={`status-badge ${map[status] || 's-draft'}`}>{status}</span>
 }

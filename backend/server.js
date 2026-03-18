@@ -32,6 +32,7 @@ app.use('/api/clients', require('./routes/clients'))
 app.use('/api/documents', require('./routes/documents'))
 app.use('/api/settings', require('./routes/settings'))
 app.use('/api/dashboard', require('./routes/dashboard'))
+app.use('/api/finance', require('./routes/finance'))
 
 // Health check
 app.get('/api/health', (req, res) => {

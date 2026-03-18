@@ -26,6 +26,20 @@ export const api = {
   updateDocument: (id: string, data: any) => req<any>(`/documents/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   updateDocumentStatus: (id: string, status: string) => req<any>(`/documents/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }),
   deleteDocument: (id: string) => req<any>(`/documents/${id}`, { method: 'DELETE' }),
+  recordPayment: (id: string, data: any) => req<any>(`/documents/${id}/record-payment`, { method: 'POST', body: JSON.stringify(data) }),
+
+  // Finance
+  getFinanceStats: () => req<any>('/finance/stats'),
+  getTransactions: (params?: any) => {
+    const q = new URLSearchParams(params).toString()
+    return req<any[]>(`/finance/transactions${q ? '?' + q : ''}`)
+  },
+  createTransaction: (data: any) => req<any>('/finance/transactions', { method: 'POST', body: JSON.stringify(data) }),
+  getBankAccounts: () => req<any[]>('/finance/accounts'),
+  createBankAccount: (data: any) => req<any>('/finance/accounts', { method: 'POST', body: JSON.stringify(data) }),
+  getCategories: (type?: string) => req<any[]>(`/finance/categories${type ? '?type=' + type : ''}`),
+  getRecurringPayments: () => req<any[]>('/finance/recurring'),
+  createRecurringPayment: (data: any) => req<any>('/finance/recurring', { method: 'POST', body: JSON.stringify(data) }),
 
   // Clients
   getClients: () => req<any[]>('/clients'),
