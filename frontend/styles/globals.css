@@ -765,7 +765,19 @@ input, select, textarea { min-height: 44px; }
   .client-grid { grid-template-columns: 1fr; }
 
   /* Print preview */
-  .print-preview-bg { padding: 12px; border-radius: 10px; }
+  .print-preview-bg {
+    padding: 10px;
+    border-radius: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .print-preview-bg .print-document {
+    width: 100%;
+    min-height: auto;
+    padding: 10mm 8mm;
+    border-radius: 8px;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.18);
+  }
 
   /* Hide currency switch on very small */
   .cur-switch { display: none; }
@@ -782,6 +794,7 @@ input, select, textarea { min-height: 44px; }
   .topbar-logo { font-size: 18px; }
   .page-title { font-size: 20px; }
   .glass-card-header { padding: 12px 14px; }
+  .print-preview-bg .print-document { padding: 8mm 6mm; }
 }
 
 /* ═══════════════════════════════════════
