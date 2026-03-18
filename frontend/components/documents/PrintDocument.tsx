@@ -44,7 +44,7 @@ export default function PrintDocument({ doc, client, settings }: Props) {
             {doc.type.toUpperCase()}
           </div>
           <div style={{ marginTop: 8, fontSize: 11, color: '#666', lineHeight: 2 }}>
-            <div><span style={{ color: '#d29f22', fontWeight: 700 }}>#</span> {doc.number}</div>
+            <div>{doc.number}</div>
             <div>Date: {formatDate(doc.date)}</div>
             {doc.due_date && <div>{doc.type === 'Estimate' ? 'Valid Until' : 'Due'}: {formatDate(doc.due_date)}</div>}
             <div style={{ marginTop: 4 }}>
@@ -185,7 +185,7 @@ export default function PrintDocument({ doc, client, settings }: Props) {
         <div style={{ textAlign: 'center' }}>
           <div style={{ height: 40, marginBottom: 7 }} />
           <div style={{ width: 150, borderTop: '1px solid #aaa', paddingTop: 6, fontSize: 10.5, color: '#666', textAlign: 'center', margin: '0 auto' }}>
-            Client Signature<br />Date: ________________
+            Client Signature
           </div>
         </div>
       </div>

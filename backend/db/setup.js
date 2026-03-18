@@ -56,7 +56,7 @@ async function setup() {
         email TEXT DEFAULT 'shubiqofficial@gmail.com',
         phone TEXT DEFAULT '',
         website TEXT DEFAULT 'https://shubiq.com',
-        address TEXT DEFAULT 'Pune, Maharashtra, India',
+        address TEXT DEFAULT 'Miraj, Maharashtra, India',
         gst_number TEXT DEFAULT '',
         pan_number TEXT DEFAULT '',
         invoice_prefix TEXT DEFAULT 'INV-',

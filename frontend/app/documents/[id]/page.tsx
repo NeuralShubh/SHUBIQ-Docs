@@ -12,7 +12,7 @@ import { Printer, Pencil, ArrowLeft } from 'lucide-react'
 const defaultSettings: CompanySettings = {
   name: 'SHUBIQ', tagline: 'Intelligence That Wins',
   email: 'shubiqofficial@gmail.com', phone: '', website: 'https://shubiq.com',
-  address: 'Pune, Maharashtra, India', gst_number: '', pan_number: '',
+  address: 'Miraj, Maharashtra, India', gst_number: '', pan_number: '',
   invoice_prefix: 'INV-', estimate_prefix: 'EST-', receipt_prefix: 'REC-',
   invoice_counter: 1, estimate_counter: 1, receipt_counter: 1,
   default_currency: 'INR', default_tax_rate: 18, payment_due_days: 30,
