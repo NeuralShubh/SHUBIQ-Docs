@@ -3,25 +3,36 @@ import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
 import AppLayout from '@/components/layout/AppLayout'
 import { FinancialSummary, BankAccount } from '@/types'
-import { PageHeader, StatCard, GlassCard, Amount, SectionTitle } from '@/components/ui'
+import { PageHeader, StatCard, GlassCard, Amount, SectionTitle, ToastProvider } from '@/components/ui'
 import { formatCurrency } from '@/lib/utils'
 import { TrendingUp, TrendingDown, Landmark, Wallet, Plus, ArrowRightLeft } from 'lucide-react'
+import NewTransactionModal from '@/components/finance/NewTransactionModal'
+import AddAccountModal from '@/components/finance/AddAccountModal'
 
 export default function FinancePage() {
-  const [data, setData] = useState<FinancialSummary | null>(null)
+  const [data, setData] = useState<any | null>(null)
   const [accounts, setAccounts] = useState<BankAccount[]>([])
   const [loading, setLoading] = useState(true)
 
+  const [showTxModal, setShowTxModal] = useState(false)
+  const [showAcctModal, setShowAcctModal] = useState(false)
+
   useEffect(() => {
-    Promise.all([
-      api.getFinanceStats(),
-      api.getBankAccounts()
-    ]).then(([stats, accts]) => {
+    load()
+  }, [])
+
+  async function load() {
+    try {
+      const [stats, accts] = await Promise.all([
+        api.getFinanceStats(),
+        api.getBankAccounts()
+      ])
       setData(stats)
       setAccounts(accts)
+    } finally {
       setLoading(false)
-    })
-  }, [])
+    }
+  }
 
   if (loading || !data) return (
     <AppLayout>
@@ -29,19 +40,23 @@ export default function FinancePage() {
     </AppLayout>
   )
 
+  const summary = data.summary || { total_balance: 0, total_income: 0, total_expense: 0, total_receivable: 0 }
+  const cashflow = data.cashflow || []
+
   // Calculate max for chart scaling
-  const maxVal = Math.max(...data.cashflow.map(m => Math.max(m.income, m.expense)), 1000)
+  const maxVal = Math.max(...cashflow.map((m: any) => Math.max(m.income, m.expense)), 1000)
 
   return (
     <AppLayout>
+      <ToastProvider />
       <div className="animate-in">
         <PageHeader 
           title="Financial Overview" 
           subtitle="Track your cashflow, profit & loss, and bank balances"
           action={
             <div className="flex gap-2">
-              <button className="btn btn-glass btn-sm"><Plus size={16} /> New Transaction</button>
-              <button className="btn btn-gold btn-sm"><ArrowRightLeft size={16} /> Transfer</button>
+              <button onClick={() => setShowTxModal(true)} className="btn btn-glass btn-sm"><Plus size={16} /> New Transaction</button>
+              <button disabled className="btn btn-gold btn-sm"><ArrowRightLeft size={16} /> Transfer</button>
             </div>
           }
         />
@@ -49,23 +64,23 @@ export default function FinancePage() {
         <div className="stats-grid">
           <StatCard 
             label="Total Balance" 
-            value={formatCurrency(data.total_balance, 'INR')} 
+            value={formatCurrency(summary.total_balance, 'INR')} 
             change="Combined liquidity"
           />
           <StatCard 
             label="Estimated Profit" 
-            value={formatCurrency(data.total_income - data.total_expense, 'INR')} 
-            change={`${((data.total_income - data.total_expense) / (data.total_income || 1) * 100).toFixed(1)}% Margin`}
+            value={formatCurrency(summary.total_income - summary.total_expense, 'INR')} 
+            change={`${((summary.total_income - summary.total_expense) / (summary.total_income || 1) * 100).toFixed(1)}% Margin`}
           />
           <StatCard 
             label="Pending Receivables" 
-            value={formatCurrency(data.total_receivable, 'INR')} 
+            value={formatCurrency(summary.total_receivable, 'INR')} 
             change="Unpaid Invoices"
             crimson
           />
           <StatCard 
             label="Monthly Burn" 
-            value={formatCurrency(data.total_expense / 6, 'INR')} 
+            value={formatCurrency(summary.total_expense / 6, 'INR')} 
             change="Avg. Last 6 Months"
             crimson
           />
@@ -85,7 +100,7 @@ export default function FinancePage() {
               </div>
               
               <div className="chart-container">
-                {data.cashflow.map((m, i) => (
+                {cashflow.map((m: any, i: number) => (
                   <div key={i} className="chart-col">
                     <div className="chart-tooltip">
                       In: {formatCurrency(m.income, 'INR')}<br/>
@@ -124,7 +139,7 @@ export default function FinancePage() {
                   <div className="acct-bal">{formatCurrency(acct.balance, acct.currency)}</div>
                 </div>
               ))}
-              <button className="btn btn-glass btn-full py-6 border-dashed opacity-60">
+              <button onClick={() => setShowAcctModal(true)} className="btn btn-glass btn-full py-6 border-dashed opacity-60">
                 <Plus size={18} /> Add Account
               </button>
             </div>
@@ -133,12 +148,14 @@ export default function FinancePage() {
 
         <div className="mt-8">
           <GlassCard header="Recent Financial Activity">
-            {/* We'll add a simplified transaction list here */}
             <div className="p-8 text-center text-zinc-500 italic text-sm">
-              Recent income and expenses will appear here.
+              Recent income and expenses will appear here once you record them.
             </div>
           </GlassCard>
         </div>
+
+        {showTxModal && <NewTransactionModal onClose={() => setShowTxModal(false)} onSuccess={load} />}
+        {showAcctModal && <AddAccountModal onClose={() => setShowAcctModal(false)} onSuccess={load} />}
       </div>
     </AppLayout>
   )
