@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
 import AppLayout from '@/components/layout/AppLayout'
 import { Transaction } from '@/types'
-import { PageHeader, GlassCard, StatusBadge, Amount } from '@/components/ui'
+import { PageHeader, GlassCard } from '@/components/ui'
+import NewTransactionModal from '@/components/finance/NewTransactionModal'
 import { formatDate, formatCurrency } from '@/lib/utils'
 import { Filter, Download, Plus, ArrowUpRight, ArrowDownLeft, Scissors } from 'lucide-react'
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
+  const [showNew, setShowNew] = useState(false)
 
   useEffect(() => {
     api.getTransactions().then(res => {
@@ -35,8 +37,9 @@ export default function TransactionsPage() {
           subtitle="All financial movements across your business"
           action={
             <div className="flex gap-2">
-              <button className="btn btn-glass btn-sm"><Download size={16} /> Export</button>
-              <button className="btn btn-gold btn-sm"><Plus size={16} /> Add Manual</button>
+              <button className="btn btn-gold btn-sm" onClick={() => setShowNew(true)}>
+                <Plus size={16} /> New Transaction
+              </button>
             </div>
           }
         />
@@ -111,6 +114,16 @@ export default function TransactionsPage() {
           </div>
         </GlassCard>
       </div>
+
+      {showNew && (
+        <NewTransactionModal
+          onClose={() => setShowNew(false)}
+          onSuccess={(tx) => {
+            setTransactions(prev => [tx, ...prev])
+            setShowNew(false)
+          }}
+        />
+      )}
     </AppLayout>
   )
 }
