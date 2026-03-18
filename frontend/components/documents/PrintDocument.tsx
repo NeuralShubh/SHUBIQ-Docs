@@ -32,8 +32,20 @@ export default function PrintDocument({ doc, client, settings }: Props) {
             {settings.tagline}
           </div>
           <div style={{ marginTop: 10, fontSize: 11, color: '#555', lineHeight: 1.9 }}>
-            {settings.website && <div>{settings.website}</div>}
-            {settings.email && <div>{settings.email}</div>}
+            {settings.website && (
+              <div>
+                <a href={settings.website.startsWith('http') ? settings.website : `https://${settings.website}`} style={{ color: '#555', textDecoration: 'none' }}>
+                  {settings.website}
+                </a>
+              </div>
+            )}
+            {settings.email && (
+              <div>
+                <a href={`mailto:${settings.email}`} style={{ color: '#555', textDecoration: 'none' }}>
+                  {settings.email}
+                </a>
+              </div>
+            )}
             {settings.phone && <div>{settings.phone}</div>}
             {settings.address && <div>{settings.address}</div>}
             {settings.gst_number && <div style={{ color: '#888', fontSize: 10 }}>GSTIN: {settings.gst_number}</div>}
@@ -80,7 +92,13 @@ export default function PrintDocument({ doc, client, settings }: Props) {
           <div style={{ fontSize: 13, lineHeight: 1.85, color: '#333' }}>
             <strong style={{ fontSize: 14 }}>{client.name}</strong>
             {client.company && <div>{client.company}</div>}
-            {client.email && <div style={{ color: '#d29f22' }}>{client.email}</div>}
+            {client.email && (
+              <div>
+                <a href={`mailto:${client.email}`} style={{ color: '#d29f22', textDecoration: 'none' }}>
+                  {client.email}
+                </a>
+              </div>
+            )}
             {client.phone && <div>{client.phone}</div>}
             {client.address && <div style={{ color: '#666', fontSize: 11 }}>{client.address}</div>}
             {client.gst_number && <div style={{ color: '#888', fontSize: 10.5, marginTop: 2 }}>GSTIN: {client.gst_number}</div>}
@@ -192,7 +210,11 @@ export default function PrintDocument({ doc, client, settings }: Props) {
 
       {/* Footer */}
       <div style={{ marginTop: 22, paddingTop: 12, borderTop: '1px solid #e8dfc0', textAlign: 'center', fontSize: 9, color: '#bbb', letterSpacing: '0.04em' }}>
-        {settings.name} · {settings.tagline} · {settings.website}<br />
+        {settings.name} · {settings.tagline} · {settings.website ? (
+          <a href={settings.website.startsWith('http') ? settings.website : `https://${settings.website}`} style={{ color: '#bbb', textDecoration: 'none' }}>
+            {settings.website}
+          </a>
+        ) : ''}<br />
         This is a computer generated document.
       </div>
       {/* Bottom bar */}
