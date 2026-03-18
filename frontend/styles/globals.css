@@ -211,7 +211,7 @@ input, select, textarea { min-height: 44px; }
 .sidebar-overlay.open { display: block; }
 .sidebar {
   position: fixed;
-  top: 0;
+  top: var(--topbar-h);
   left: 0;
   bottom: 0;
   width: var(--sidebar-w);
@@ -219,7 +219,7 @@ input, select, textarea { min-height: 44px; }
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   border-right: 1px solid rgba(210,159,34,0.22);
-  padding: 12px 0;
+  padding: 16px 0;
   overflow-y: auto;
   z-index: 210;
   transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
