@@ -671,7 +671,18 @@ input, select, textarea { min-height: 44px; }
 .items-table input { background: transparent; border: none; padding: 4px 0; font-size: 13px; min-height: unset; }
 
 /* ─── PRINT DOC PREVIEW ─── */
-.print-preview-bg { background: #dbd7cf; padding: 28px; border-radius: var(--r2); }
+.print-preview-bg {
+  background: #dbd7cf;
+  padding: 28px;
+  border-radius: var(--r2);
+  display: flex;
+  justify-content: center;
+}
+.print-preview-bg .print-document {
+  margin: 0 auto;
+  max-width: 210mm;
+  width: 100%;
+}
 
 /* ─── TOAST ─── */
 .toast {
