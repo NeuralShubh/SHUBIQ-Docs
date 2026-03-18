@@ -35,8 +35,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return () => { document.body.style.overflow = '' }
   }, [sidebarOpen])
 
-  const isActive = (href: string) =>
-    pathname === href || (href !== '/dashboard' && pathname.startsWith(href))
+  const activeHref = navItems
+    .filter((item: any) => 'href' in item && item.href)
+    .map((item: any) => item.href as string)
+    .filter(href => pathname === href || (href !== '/dashboard' && pathname.startsWith(href)))
+    .sort((a, b) => b.length - a.length)[0]
+
+  const isActive = (href: string) => href === activeHref
 
   return (
     <>
