@@ -276,8 +276,8 @@ export default function DocumentForm({ initialType = 'Invoice', existingDoc }: P
               <table className="items-table">
                 <thead>
                   <tr>
-                    {['Description','Category','Qty','Rate','Amount',''].map((h,i) => (
-                      <th key={i} style={{ textAlign: i >= 2 && i < 5 ? 'right' : 'left', width: i===5?'40px':i===2?'10%':i===3||i===4?'15%':i===1?'18%':'auto' }}>{h}</th>
+                    {['Description','Qty','Rate','Amount',''].map((h,i) => (
+                      <th key={i} style={{ textAlign: i >= 1 && i < 4 ? 'right' : 'left', width: i===4?'40px':i===1?'10%':i===2||i===3?'15%':'auto' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -285,10 +285,13 @@ export default function DocumentForm({ initialType = 'Invoice', existingDoc }: P
                   {items.map((item, i) => (
                     <tr key={item.id}>
                       <td>
-                        <input value={item.description} onChange={e => updateItem(i, 'description', e.target.value)} placeholder="Description" />
-                      </td>
-                      <td>
-                        <input value={item.category} onChange={e => updateItem(i, 'category', e.target.value)} placeholder="Category" />
+                        <textarea
+                          value={item.description}
+                          onChange={e => updateItem(i, 'description', e.target.value)}
+                          placeholder={"Main item title\n- Feature 1\n- Feature 2"}
+                          rows={3}
+                          style={{ resize: 'vertical' }}
+                        />
                       </td>
                       <td>
                         <input type="number" min={1} value={item.quantity} onChange={e => updateItem(i, 'quantity', parseFloat(e.target.value)||0)} style={{ textAlign: 'right' }} />
