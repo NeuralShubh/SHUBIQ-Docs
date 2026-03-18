@@ -3,15 +3,17 @@ import { useEffect, useState } from 'react'
 import { api } from '@/lib/api'
 import AppLayout from '@/components/layout/AppLayout'
 import { BankAccount } from '@/types'
-import { PageHeader, GlassCard, SectionTitle, showToast, ToastProvider } from '@/components/ui'
+import { PageHeader, GlassCard, ToastProvider } from '@/components/ui'
 import { formatCurrency } from '@/lib/utils'
-import { Landmark, Plus, Trash2, Edit2, Star, CreditCard, Wallet } from 'lucide-react'
+import { Landmark, Plus, Edit2, CreditCard, Wallet } from 'lucide-react'
 import AddAccountModal from '@/components/finance/AddAccountModal'
+import AccountDetailsModal from '@/components/finance/AccountDetailsModal'
 
 export default function BankAccountsPage() {
   const [accounts, setAccounts] = useState<BankAccount[]>([])
   const [loading, setLoading] = useState(true)
   const [showAddModal, setShowAddModal] = useState(false)
+  const [selected, setSelected] = useState<BankAccount | null>(null)
 
   useEffect(() => {
     load()
@@ -47,21 +49,20 @@ export default function BankAccountsPage() {
             <div className="p-8 text-zinc-500">Loading accounts...</div>
           ) : accounts.map(acct => (
             <GlassCard key={acct.id}>
-              <div className="p-5 flex flex-col h-full">
+              <button
+                className="w-full text-left p-5 flex flex-col h-full hover:bg-white/[0.02] transition-colors rounded-[16px]"
+                onClick={() => setSelected(acct)}
+              >
                 <div className="flex justify-between items-start mb-4">
                   <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
                     {getIcon(acct.type)}
                   </div>
-                  <div className="flex gap-1">
-                    {acct.is_default && (
-                      <div className="p-1.5 bg-amber-500/10 text-amber-500 rounded-md" title="Default Account">
-                        <Star size={14} fill="currentColor" />
-                      </div>
-                    )}
-                    <button className="p-1.5 hover:bg-white/5 rounded-md transition-colors text-zinc-500 hover:text-white">
-                      <Edit2 size={14} />
-                    </button>
-                  </div>
+                  <button
+                    className="p-1.5 hover:bg-white/5 rounded-md transition-colors text-zinc-500 hover:text-white"
+                    onClick={(e) => { e.stopPropagation(); setSelected(acct) }}
+                  >
+                    <Edit2 size={14} />
+                  </button>
                 </div>
 
                 <div className="flex-1">
@@ -80,7 +81,7 @@ export default function BankAccountsPage() {
                     {formatCurrency(acct.balance, acct.currency)}
                   </div>
                 </div>
-              </div>
+              </button>
             </GlassCard>
           ))}
           
@@ -96,6 +97,12 @@ export default function BankAccountsPage() {
         </div>
 
         {showAddModal && <AddAccountModal onClose={() => setShowAddModal(false)} onSuccess={load} />}
+        {selected && (
+          <AccountDetailsModal
+            account={selected}
+            onClose={() => setSelected(null)}
+          />
+        )}
       </div>
     </AppLayout>
   )
