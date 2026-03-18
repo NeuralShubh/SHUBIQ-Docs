@@ -38,8 +38,6 @@ export const api = {
   getBankAccounts: () => req<any[]>('/finance/accounts'),
   createBankAccount: (data: any) => req<any>('/finance/accounts', { method: 'POST', body: JSON.stringify(data) }),
   getCategories: (type?: string) => req<any[]>(`/finance/categories${type ? '?type=' + type : ''}`),
-  getRecurringPayments: () => req<any[]>('/finance/recurring'),
-  createRecurringPayment: (data: any) => req<any>('/finance/recurring', { method: 'POST', body: JSON.stringify(data) }),
 
   // Clients
   getClients: () => req<any[]>('/clients'),

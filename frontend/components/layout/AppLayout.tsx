@@ -9,7 +9,6 @@ const navItems = [
   { href: '/finance', label: 'Overview' },
   { href: '/finance/transactions', label: 'Transactions' },
   { href: '/finance/accounts', label: 'Bank Accounts' },
-  { href: '/finance/recurring', label: 'Recurring' },
   { section: 'Documents' },
   { href: '/invoices', label: 'Invoices' },
   { href: '/estimates', label: 'Estimates' },
