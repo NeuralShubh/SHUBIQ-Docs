@@ -217,7 +217,7 @@ export default function PrintDocument({ doc, client, settings }: Props) {
         This is a computer generated document.
       </div>
       {/* Bottom bar */}
-      <div className="print-bottom-bar" style={{ height: 3, background: 'linear-gradient(90deg,#5d0018,#d29f22,#252628,#d29f22,#5d0018)', marginTop: 14, borderRadius: 2 }} />
+      <div className="print-bottom-bar" style={{ height: 2, background: 'linear-gradient(90deg,#5d0018,#d29f22,#252628,#d29f22,#5d0018)', marginTop: 6, marginBottom: 0, borderRadius: 2 }} />
     </div>
   )
 }
