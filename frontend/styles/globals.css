@@ -822,11 +822,21 @@ input, select, textarea { min-height: 44px; }
   .print-document {
     display: block !important;
     width: 210mm;
-    min-height: 297mm;
-    padding: 14mm 16mm;
+    min-height: auto;
+    padding: 12mm 14mm 10mm;
     background: white !important;
     color: #1a1a1a !important;
     font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  .print-footer {
+    margin-top: 12px !important;
+    padding-top: 8px !important;
+  }
+
+  .print-bottom-bar {
+    margin-top: 8px !important;
   }
 }
 

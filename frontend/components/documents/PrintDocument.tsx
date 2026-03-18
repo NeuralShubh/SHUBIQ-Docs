@@ -208,7 +208,7 @@ export default function PrintDocument({ doc, client, settings }: Props) {
       </div>
 
       {/* Footer */}
-      <div style={{ marginTop: 22, paddingTop: 12, borderTop: '1px solid #e8dfc0', textAlign: 'center', fontSize: 9, color: '#bbb', letterSpacing: '0.04em' }}>
+      <div className="print-footer" style={{ marginTop: 22, paddingTop: 12, borderTop: '1px solid #e8dfc0', textAlign: 'center', fontSize: 9, color: '#bbb', letterSpacing: '0.04em' }}>
         {settings.name} · {settings.tagline} · {settings.website ? (
           <a href={settings.website.startsWith('http') ? settings.website : `https://${settings.website}`} style={{ color: '#bbb', textDecoration: 'none' }}>
             {settings.website}
@@ -217,7 +217,7 @@ export default function PrintDocument({ doc, client, settings }: Props) {
         This is a computer generated document.
       </div>
       {/* Bottom bar */}
-      <div style={{ height: 3, background: 'linear-gradient(90deg,#5d0018,#d29f22,#252628,#d29f22,#5d0018)', marginTop: 14, borderRadius: 2 }} />
+      <div className="print-bottom-bar" style={{ height: 3, background: 'linear-gradient(90deg,#5d0018,#d29f22,#252628,#d29f22,#5d0018)', marginTop: 14, borderRadius: 2 }} />
     </div>
   )
 }
