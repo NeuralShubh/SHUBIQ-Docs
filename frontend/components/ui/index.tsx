@@ -40,7 +40,7 @@ export function StatCard({
 // ── GLASS CARD ──
 export function GlassCard({
   children, header, action
-}: { children: ReactNode; header?: string; action?: ReactNode }) {
+}: { children: ReactNode; header?: ReactNode; action?: ReactNode }) {
   return (
     <div className="glass-card">
       {header && (
