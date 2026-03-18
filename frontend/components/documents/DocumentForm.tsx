@@ -152,7 +152,7 @@ export default function DocumentForm({ initialType = 'Invoice', existingDoc }: P
     subtotal, tax_rate: taxRate, tax_amount: taxAmount, total,
     notes, terms, payment_method: paymentMethod as any,
     bank_name: bankName, account_number: accountNo, ifsc_code: ifsc, upi_id: upi,
-    ref_document: refDoc, created_at: '', updated_at: '',
+    ref_document: refDoc, paid_amount: 0, discount_amount: 0, created_at: '', updated_at: '',
   }
   const previewClient = { name: clientName, company: clientCompany, email: clientEmail, phone: clientPhone, address: clientAddress, gst_number: clientGst }
   const previewSettings = { ...settings, bank_name: bankName, account_number: accountNo, ifsc_code: ifsc, upi_id: upi }
