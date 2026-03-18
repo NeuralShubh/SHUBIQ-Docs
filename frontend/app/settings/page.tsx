@@ -15,7 +15,7 @@ const defaults: CompanySettings = {
   default_currency: 'INR', default_tax_rate: 18, payment_due_days: 30,
   bank_name: '', account_number: '', ifsc_code: '', account_type: 'Current', upi_id: '',
   default_notes: 'Thank you for your business. We look forward to a long-term partnership.',
-  default_terms: 'Payment is due within 30 days of invoice date. Late payments may incur a 2% monthly interest charge. All work remains property of SHUBIQ until full payment is received.',
+  default_terms: '50% advance is required to start work, 30% at mid‑project, and the remaining 20% on final delivery. Invoices are payable within 7 days of issue. Work output remains the property of SHUBIQ until full payment is received.',
 }
 
 export default function SettingsPage() {
