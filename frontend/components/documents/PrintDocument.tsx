@@ -122,9 +122,9 @@ export default function PrintDocument({ doc, client, settings }: Props) {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
           <thead>
             <tr style={{ background: '#f9f4e8' }}>
-              {['Description', 'Category', 'Qty', 'Rate', 'Amount'].map((h, i) => (
+              {['Description', 'Qty', 'Rate', 'Amount'].map((h, i) => (
                 <th key={h} style={{
-                  padding: '9px 11px', textAlign: i > 1 ? 'right' : 'left',
+                  padding: '9px 11px', textAlign: i > 0 ? 'right' : 'left',
                   fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.08em',
                   color: '#999', borderBottom: '1px solid #ecdfc0', fontWeight: 600,
                 }}>{h}</th>
@@ -134,8 +134,26 @@ export default function PrintDocument({ doc, client, settings }: Props) {
           <tbody>
             {(doc.line_items || []).map((item, i) => (
               <tr key={i} style={{ background: i % 2 === 0 ? '#fff' : '#fdfcf9' }}>
-                <td style={{ padding: '9px 11px', borderBottom: '1px solid #f5f0e2', color: '#222', fontWeight: 500 }}>{item.description}</td>
-                <td style={{ padding: '9px 11px', borderBottom: '1px solid #f5f0e2', color: '#888', fontSize: 11 }}>{item.category || '—'}</td>
+                <td style={{ padding: '9px 11px', borderBottom: '1px solid #f5f0e2', color: '#222' }}>
+                  {(() => {
+                    const raw = String(item.description || '').trim()
+                    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean)
+                    const title = lines[0] || '—'
+                    const bullets = lines.slice(1)
+                    return (
+                      <div>
+                        <div style={{ fontWeight: 600 }}>{title}</div>
+                        {bullets.length > 0 && (
+                          <ul style={{ marginTop: 4, paddingLeft: 16, color: '#555', fontSize: 11 }}>
+                            {bullets.map((b, idx) => (
+                              <li key={idx} style={{ marginBottom: 2 }}>{b.replace(/^[-•]\s*/, '')}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    )
+                  })()}
+                </td>
                 <td style={{ padding: '9px 11px', borderBottom: '1px solid #f5f0e2', textAlign: 'right', color: '#555' }}>{item.quantity}</td>
                 <td style={{ padding: '9px 11px', borderBottom: '1px solid #f5f0e2', textAlign: 'right', color: '#555' }}>{fmt(item.rate)}</td>
                 <td style={{ padding: '9px 11px', borderBottom: '1px solid #f5f0e2', textAlign: 'right', color: '#1a1a1a', fontWeight: 600 }}>{fmt(item.amount)}</td>
